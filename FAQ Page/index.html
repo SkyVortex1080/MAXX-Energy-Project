@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Frequently Asked Questions</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <h1>Frequently Asked Questions</h1>
+	<nav>
+		<ul>
+			<li><a href="index.html">Home<a/></li>
+			<li><a href="login.html">Login<a/></li>
+			<li><a href="register.html">Register<a/></li>
+			<li><a href="about.html">About<a/></li>
+			<input type="text" placeholder="Search...">
+		</ul>
+	</nav>
+      <div class="faq">
+        <button class="accordion">
+          What is MAXX Energy?
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="pannel">
+          <p>
+            MAXX Energy is a company dedicated to sustainable energy source architecture.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq">
+        <button class="accordion">
+          How does it work?
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="pannel">
+          <p>
+            Our employees build and maintain structures such as wind turbines and solar panels for various locales.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq">
+        <button class="accordion">
+          What are the major challenges of MAXX Energy?
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="pannel">
+          <p>
+            Major challenges include geographical barriers, wildlife preservation, and long-term funding.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq">
+        <button class="accordion">
+          How does MAXX Energy address the above challenges?
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="pannel">
+          <p>
+            We address these challenges by hiring experienced consultants and collaborating with our business partners.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq">
+        <button class="accordion">
+          How can I be a part of MAXX Energy?
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="pannel">
+          <p>
+            We are currently hiring.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <script>
+      var acc = document.getElementsByClassName("accordion");
+      var i;
+
+      for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function () {
+          this.classList.toggle("active");
+          this.parentElement.classList.toggle("active");
+
+          var pannel = this.nextElementSibling;
+
+          if (pannel.style.display === "block") {
+            pannel.style.display = "none";
+          } else {
+            pannel.style.display = "block";
+          }
+        });
+      }
+    </script>
+	
+	<footer>
+	<img src="logo.svg" width="80" height="80">
+    <p>MAXX Energy &copy 2025</p>
+    </footer>
+  </body>
+</html>
