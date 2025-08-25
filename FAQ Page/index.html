@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Frequently Asked Questions</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Frequently Asked Questions</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
   <body>
     <div class="wrapper">
       <h1>Frequently Asked Questions</h1>
@@ -77,33 +77,12 @@
             We are currently hiring.
           </p>
         </div>
-      </div>
-
+      </div
     </div>
-
-    <script>
-      var acc = document.getElementsByClassName("accordion");
-      var i;
-
-      for (i = 0; i < acc.length; i++) {
-        acc[i].addEventListener("click", function () {
-          this.classList.toggle("active");
-          this.parentElement.classList.toggle("active");
-
-          var pannel = this.nextElementSibling;
-
-          if (pannel.style.display === "block") {
-            pannel.style.display = "none";
-          } else {
-            pannel.style.display = "block";
-          }
-        });
-      }
-    </script>
-	
 	<footer>
 	<img src="logo.svg" width="80" height="80">
     <p>MAXX Energy &copy 2025</p>
     </footer>
+	<script src="script.js"></script>
   </body>
 </html>
