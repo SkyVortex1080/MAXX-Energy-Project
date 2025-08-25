@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAXX Energy - User Profile</title>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>User Profile</h1>
+    </header>
+	<nav>
+		<ul>
+			<li><a href="index.html">Home<a/></li>
+			<li><a href="login.html">Login<a/></li>
+			<li><a href="register.html">Register<a/></li>
+			<li><a href="about.html">About<a/></li>
+		</ul>
+	</nav>
+	<section>
+		<img src="userpic.png" width="100" height="100">
+		
+		<!-- Name -->
+		<div class="field">
+			<strong>Name:</strong>
+			<span class="display" id="name-display">John Doe</span>
+			<input type="text" class="edit" id="name-edit">
+			<div class="btn-container">
+				<button class="icon-btn edit-btn">✏️</button>
+				<button class="icon-btn cancel-btn" style="display:none;">❌</button>
+			</div>
+		</div>
+
+		<!-- Email -->
+		<div class="field">
+			<strong>Email:</strong>
+			<span class="display" id="email-display">john@example.com</span>
+			<input type="email" class="edit" id="email-edit">
+			<div class="btn-container">
+				<button class="icon-btn edit-btn">✏️</button>
+				<button class="icon-btn cancel-btn" style="display:none;">❌</button>
+			</div>
+		</div>
+
+		<!-- Location -->
+		<div class="field">
+			<strong>Location:</strong>
+			<span class="display" id="location-display">Earth</span>
+			<input type="text" class="edit" id="location-edit">
+			<div class="btn-container">
+				<button class="icon-btn edit-btn">✏️</button>
+				<button class="icon-btn cancel-btn" style="display:none;">❌</button>
+			</div>
+		</div>
+
+		<!-- About Me -->
+		<div class="field">
+			<strong>About:</strong>
+			<span class="display" id="about-display">Web developer who loves coding and coffee.</span>
+			<textarea class="edit" id="about-edit"></textarea>
+			<div class="btn-container">
+				<button class="icon-btn edit-btn">✏️</button>
+				<button class="icon-btn cancel-btn" style="display:none;">❌</button>
+			</div>
+		</div>
+
+	</section>
+	<section>
+			<h1>Skillset</h1>
+		<!-- Skills text field -->
+		<div class="field">
+			<span class="display" id="skills-display">List of skills here.</span>
+			<textarea class="edit" id="skills-edit"></textarea>
+			<div class="btn-container">
+				<button class="icon-btn edit-btn">✏️</button>
+				<button class="icon-btn cancel-btn" style="display:none;">❌</button>
+			</div>
+		</div>
+	</section>
+	<section>
+			<h1>Social Links</h1>
+			<hr>
+				<ul>
+					<li>YouTube</li>
+					<li>Twitch</li>
+					<li>Reddit</li>
+				</ul>
+	</section>
+    <footer>
+		<img src="logo.svg" width="80" height="80">
+        <p>MAXX Energy &copy 2025</p>
+    </footer>
+	<script src="script.js"></script>
+</body>
+</html>
