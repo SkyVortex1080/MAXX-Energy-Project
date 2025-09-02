@@ -67,3 +67,32 @@
 
       field.editing = editing;
     });
+	
+// Restriction logic for edit fields
+fields.forEach(field => {
+  const editInput = field.querySelector(".edit");
+
+  if (editInput) {
+    // Example: block "@" in name/location/about/skills fields
+    if (editInput.type === "text" || editInput.tagName === "TEXTAREA") {
+      editInput.addEventListener("keypress", function (e) {
+        if (e.key === "@") {
+          e.preventDefault();
+          alert("The @ symbol is not allowed here.");
+        }
+      });
+    }
+
+    // Example: enforce email format for email field
+    if (editInput.type === "email") {
+      editInput.addEventListener("input", function () {
+        const emailPattern = /^[^@]+@[^@]+\.[^@]+$/;
+        if (!emailPattern.test(editInput.value)) {
+          editInput.setCustomValidity("Please enter a valid email address.");
+        } else {
+          editInput.setCustomValidity("");
+        }
+      });
+    }
+  }
+});
