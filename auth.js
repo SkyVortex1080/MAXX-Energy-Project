@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     // Redirect to user profile after successful login
                     setTimeout(() => {
-                        window.location.href = '../User Profile Page/index.html';
+                        window.location.href = 'User Profile Page/index.html';
                     }, 1500);
                 } else {
                     showMessage('Login failed. Please check your credentials.', 'error');
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (tokenManager.isLoggedIn()) {
         // If on login/register page and already logged in, redirect to profile
         if (window.location.pathname.includes('login.html') || window.location.pathname.includes('register.html')) {
-            window.location.href = '../User Profile Page/index.html';
+            window.location.href = 'User Profile Page/index.html';
         }
     }
 });
