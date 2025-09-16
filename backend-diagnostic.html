@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAXX Energy - Backend Diagnostic</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .diagnostic-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        .warning { background-color: #fff3cd; border-color: #ffeaa7; }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background-color: #0056b3; }
+        button:disabled { background-color: #6c757d; cursor: not-allowed; }
+        .log {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="diagnostic-container">
+        <h1>🔧 MAXX Energy Backend Diagnostic Tool</h1>
+        
+        <div class="test-section">
+            <h3>Backend Configuration</h3>
+            <p><strong>Base URL:</strong> <span id="baseUrl">https://b5e776df14c2.ngrok-free.app</span></p>
+            <p><strong>Health Endpoint:</strong> <span id="healthUrl">https://b5e776df14c2.ngrok-free.app/health</span></p>
+            <p><strong>Register Endpoint:</strong> <span id="registerUrl">https://b5e776df14c2.ngrok-free.app/auth/register</span></p>
+        </div>
+
+        <div class="test-section">
+            <h3>Connection Tests</h3>
+            <button onclick="testHealthEndpoint()">Test Health Endpoint</button>
+            <button onclick="testRegisterEndpoint()">Test Register Endpoint</button>
+            <button onclick="testAllEndpoints()">Test All Endpoints</button>
+            <button onclick="clearLog()">Clear Log</button>
+        </div>
+
+        <div class="test-section">
+            <h3>Test Results</h3>
+            <div id="log" class="log">Click a test button above to start diagnostics...</div>
+        </div>
+
+        <div class="test-section">
+            <h3>Troubleshooting Steps</h3>
+            <ol>
+                <li><strong>Check if your backend server is running</strong>
+                    <ul>
+                        <li>Look for your backend server process in terminal/command prompt</li>
+                        <li>Try accessing <code>http://localhost:PORT</code> in your browser</li>
+                    </ul>
+                </li>
+                <li><strong>Verify ngrok tunnel is active</strong>
+                    <ul>
+                        <li>Check if ngrok is still running in your terminal</li>
+                        <li>Look for the tunnel URL in ngrok output</li>
+                        <li>Visit <code>http://localhost:4040</code> to see ngrok web interface</li>
+                    </ul>
+                </li>
+                <li><strong>Restart ngrok if needed</strong>
+                    <ul>
+                        <li>Stop ngrok (Ctrl+C)</li>
+                        <li>Run: <code>ngrok http YOUR_PORT</code></li>
+                        <li>Update the URL in api-config.js if it changed</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        const BASE_URL = 'https://b5e776df14c2.ngrok-free.app';
+        const log = document.getElementById('log');
+
+        function addLog(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${message}\n`;
+            log.textContent += logEntry;
+            log.scrollTop = log.scrollHeight;
+        }
+
+        function clearLog() {
+            log.textContent = '';
+        }
+
+        async function testHealthEndpoint() {
+            addLog('Testing health endpoint...');
+            try {
+                const response = await fetch(`${BASE_URL}/health`, {
+                    headers: {
+                        'ngrok-skip-browser-warning': 'true'
+                    }
+                });
+                
+                addLog(`Health endpoint response status: ${response.status}`);
+                addLog(`Content-Type: ${response.headers.get('content-type')}`);
+                
+                if (response.ok) {
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        const data = await response.json();
+                        addLog(`✅ Health check successful: ${JSON.stringify(data)}`);
+                    } else {
+                        const text = await response.text();
+                        addLog(`⚠️ Health endpoint returned non-JSON: ${text.substring(0, 100)}...`);
+                    }
+                } else {
+                    addLog(`❌ Health endpoint returned error status: ${response.status}`);
+                }
+            } catch (error) {
+                addLog(`❌ Health endpoint test failed: ${error.message}`);
+            }
+        }
+
+        async function testRegisterEndpoint() {
+            addLog('Testing register endpoint...');
+            try {
+                const testData = {
+                    username: 'testuser',
+                    email: 'test@example.com',
+                    password: 'testpass123',
+                    name: 'Test User',
+                    employeeId: 'EMP001'
+                };
+
+                const response = await fetch(`${BASE_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'ngrok-skip-browser-warning': 'true'
+                    },
+                    body: JSON.stringify(testData)
+                });
+                
+                addLog(`Register endpoint response status: ${response.status}`);
+                addLog(`Content-Type: ${response.headers.get('content-type')}`);
+                
+                if (response.ok) {
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        const data = await response.json();
+                        addLog(`✅ Register endpoint accessible: ${JSON.stringify(data)}`);
+                    } else {
+                        const text = await response.text();
+                        addLog(`⚠️ Register endpoint returned non-JSON: ${text.substring(0, 100)}...`);
+                    }
+                } else {
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        const errorData = await response.json();
+                        addLog(`⚠️ Register endpoint returned error: ${JSON.stringify(errorData)}`);
+                    } else {
+                        const text = await response.text();
+                        addLog(`❌ Register endpoint returned error: ${text.substring(0, 100)}...`);
+                    }
+                }
+            } catch (error) {
+                addLog(`❌ Register endpoint test failed: ${error.message}`);
+            }
+        }
+
+        async function testAllEndpoints() {
+            addLog('Starting comprehensive backend test...');
+            await testHealthEndpoint();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await testRegisterEndpoint();
+            addLog('Comprehensive test completed.');
+        }
+
+        // Auto-run basic test on page load
+        window.addEventListener('load', () => {
+            addLog('Backend diagnostic tool loaded');
+            addLog('Click "Test Health Endpoint" to start diagnostics');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAXX Energy - Home</title>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>MAXX Energy</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="register.html">Register</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+    </nav>
+    
+    <main>
+        <section>
+            <h2>Welcome to MAXX Energy</h2>
+            <p>MAXX Energy is a company dedicated to sustainable energy source architecture. Our employees build and maintain structures such as wind turbines and solar panels for various locales.</p>
+            
+            <h3>Get Started</h3>
+            <p>Join our team and help build a sustainable future:</p>
+            <ul>
+                <li><a href="register.html">Create an Account</a></li>
+                <li><a href="login.html">Login to Your Profile</a></li>
+                <li><a href="FAQ Page/index.html">View FAQ</a></li>
+            </ul>
+        </section>
+        
+        <section>
+            <h2>Our Mission</h2>
+            <p>We are committed to providing clean, renewable energy solutions that benefit both the environment and communities worldwide.</p>
+            
+            <h3>Key Features</h3>
+            <ul>
+                <li>Wind Turbine Installation</li>
+                <li>Solar Panel Systems</li>
+                <li>Energy Storage Solutions</li>
+                <li>Maintenance Services</li>
+            </ul>
+        </section>
+    </main>
+    
+    <footer>
+        <img src="logo.svg" width="80" height="80">
+        <p>MAXX Energy &copy 2025</p>
+    </footer>
+    
+    <script src="api-config.js"></script>
+    <script>
+        // Check if user is already logged in and redirect to profile
+        document.addEventListener('DOMContentLoaded', function() {
+            if (tokenManager.isLoggedIn()) {
+                const loginLink = document.querySelector('a[href="login.html"]');
+                const registerLink = document.querySelector('a[href="register.html"]');
+                
+                if (loginLink) {
+                    loginLink.textContent = 'Profile';
+                    loginLink.href = 'User Profile Page/index.html';
+                }
+                
+                if (registerLink) {
+                    registerLink.style.display = 'none';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

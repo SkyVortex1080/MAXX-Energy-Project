@@ -12,10 +12,11 @@
     </header>
 	<nav>
 		<ul>
-			<li><a href="index.html">Home<a/></li>
-			<li><a href="login.html">Login<a/></li>
-			<li><a href="register.html">Register<a/></li>
-			<li><a href="about.html">About<a/></li>
+			<li><a href="index.html">Home</a></li>
+			<li><a href="../login.html">Login</a></li>
+			<li><a href="../register.html">Register</a></li>
+			<li><a href="about.html">About</a></li>
+			<li><a href="#" id="logoutBtn">Logout</a></li>
 		</ul>
 	</nav>
 	<section>
@@ -87,10 +88,27 @@
 					<li>Reddit</li>
 				</ul>
 	</section>
+	
+	<section>
+		<h1>Change Password</h1>
+		<form id="changePasswordForm">
+			<div class="field">
+				<strong>Old Password:</strong>
+				<input type="password" id="oldPassword" required>
+			</div>
+			<div class="field">
+				<strong>New Password:</strong>
+				<input type="password" id="newPassword" required>
+			</div>
+			<button type="submit" class="btn-primary">Change Password</button>
+		</form>
+		<div id="passwordMessage" class="message"></div>
+	</section>
     <footer>
 		<img src="logo.svg" width="80" height="80">
         <p>MAXX Energy &copy 2025</p>
     </footer>
+	<script src="../api-config.js"></script>
 	<script src="script.js"></script>
 </body>
 </html>

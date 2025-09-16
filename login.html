@@ -1,0 +1,15 @@
+// Replace their existing login function with this:
+async function handleLogin() {
+    const username = document.getElementById('username').value; // adjust selector to match their form
+    const password = document.getElementById('password').value; // adjust selector to match their form
+    const result = await loginUser({ username, password });
+    if (result.success) {
+        // Their existing success code here
+        console.log('Login successful!');
+        // Redirect to dashboard or show success message
+    } else {
+        // Their existing error handling here
+        console.log('Login failed:', result.error);
+        // Show error message to user
+    }
+}

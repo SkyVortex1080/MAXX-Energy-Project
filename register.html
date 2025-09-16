@@ -1,0 +1,18 @@
+// Replace their existing register function with this:
+async function handleRegister() {
+    const userData = {
+        username: document.getElementById('reg_username').value,
+        email: document.getElementById('reg_email').value,
+        password: document.getElementById('reg_password').value,
+        name: document.getElementById('reg_name').value,
+        employeeId: document.getElementById('reg_employeeId').value
+    };
+    const result = await registerUser(userData);
+    if (result.success) {
+        // Their existing success code here
+        console.log('Registration successful!');
+    } else {
+        // Their existing error handling here
+        console.log('Registration failed:', result.error);
+    }
+}
