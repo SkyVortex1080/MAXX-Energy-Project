@@ -11,7 +11,84 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeProfile();
     initializePasswordChange();
     initializeLogout();
+    loadProfileData();
 });
+
+// Helper function to get field name from field element
+function getFieldName(field) {
+    const displaySpan = field.querySelector('.display');
+    if (!displaySpan) return 'unknown';
+    
+    const fieldId = displaySpan.id;
+    if (fieldId.includes('name')) return 'name';
+    if (fieldId.includes('email')) return 'email';
+    if (fieldId.includes('location')) return 'location';
+    if (fieldId.includes('about')) return 'about';
+    if (fieldId.includes('skills')) return 'skills';
+    
+    return 'unknown';
+}
+
+// Load profile data from backend or localStorage
+async function loadProfileData() {
+    try {
+        const token = tokenManager.getToken();
+        if (!token) return;
+        
+        // Try to load from backend first
+        try {
+            const response = await authAPI.getProfile(token);
+            if (response && response.data) {
+                updateProfileDisplay(response.data);
+                return;
+            }
+        } catch (error) {
+            console.log('Could not load profile from backend, using localStorage:', error);
+        }
+        
+        // Fallback to localStorage
+        loadProfileFromLocalStorage();
+    } catch (error) {
+        console.error('Error loading profile data:', error);
+        loadProfileFromLocalStorage();
+    }
+}
+
+// Update profile display with data
+function updateProfileDisplay(profileData) {
+    const fields = {
+        'name-display': profileData.name,
+        'email-display': profileData.email,
+        'location-display': profileData.location,
+        'about-display': profileData.about,
+        'skills-display': profileData.skills
+    };
+    
+    Object.entries(fields).forEach(([id, value]) => {
+        const element = document.getElementById(id);
+        if (element && value) {
+            element.textContent = value;
+            // Also store in localStorage as backup
+            const fieldName = id.replace('-display', '');
+            localStorage.setItem(`profile_${fieldName}`, value);
+        }
+    });
+}
+
+// Load profile from localStorage
+function loadProfileFromLocalStorage() {
+    const fields = ['name', 'email', 'location', 'about', 'skills'];
+    
+    fields.forEach(fieldName => {
+        const storedValue = localStorage.getItem(`profile_${fieldName}`);
+        if (storedValue) {
+            const element = document.getElementById(`${fieldName}-display`);
+            if (element) {
+                element.textContent = storedValue;
+            }
+        }
+    });
+}
 
 function initializeProfile() {
     const fields = document.querySelectorAll(".field");
@@ -63,15 +140,34 @@ function initializeProfile() {
                         editBtn.textContent = "⏳";
                         editBtn.disabled = true;
                         
-                        // Here you would typically make an API call to update the profile
-                        // For now, we'll just update the display
-                        displaySpan.textContent = newValue;
+                        // Get the field name and prepare data for API
+                        const fieldName = getFieldName(field);
+                        const token = tokenManager.getToken();
                         
-                        // Simulate API call delay
-                        await new Promise(resolve => setTimeout(resolve, 500));
+                        if (!token) {
+                            throw new Error('No authentication token found');
+                        }
                         
-                        showMessage('Profile updated successfully!', 'success');
+                        // Prepare profile update data
+                        const profileData = {
+                            [fieldName]: newValue
+                        };
+                        
+                        // Make API call to update profile
+                        const response = await authAPI.updateProfile(profileData, token);
+                        
+                        if (response.success || response.message) {
+                            // Update the display with new value
+                            displaySpan.textContent = newValue;
+                            showMessage('Profile updated successfully!', 'success');
+                            
+                            // Store the updated value in localStorage as backup
+                            localStorage.setItem(`profile_${fieldName}`, newValue);
+                        } else {
+                            throw new Error('Profile update failed');
+                        }
                     } catch (error) {
+                        console.error('Profile update error:', error);
                         displaySpan.textContent = originalValue;
                         showMessage('Failed to update profile. Please try again.', 'error');
                     } finally {

@@ -7,7 +7,9 @@ const API_CONFIG = {
         HEALTH: '/health',
         REGISTER: '/auth/register',
         LOGIN: '/auth/login',
-        CHANGE_PASSWORD: '/auth/change-password'
+        CHANGE_PASSWORD: '/auth/change-password',
+        PROFILE_UPDATE: '/auth/profile/update',
+        PROFILE_GET: '/auth/profile'
     },
     HEADERS: {
         'Content-Type': 'application/json',
@@ -84,6 +86,14 @@ const authAPI = {
 
     async checkHealth() {
         return await apiCall(API_CONFIG.ENDPOINTS.HEALTH);
+    },
+
+    async updateProfile(profileData, token) {
+        return await apiCall(API_CONFIG.ENDPOINTS.PROFILE_UPDATE, 'PUT', profileData, token);
+    },
+
+    async getProfile(token) {
+        return await apiCall(API_CONFIG.ENDPOINTS.PROFILE_GET, 'GET', null, token);
     }
 };
 
