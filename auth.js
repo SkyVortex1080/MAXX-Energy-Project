@@ -35,10 +35,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitBtn.disabled = true;
                 submitBtn.textContent = 'Logging in...';
 
+                console.log('Attempting login with:', { username });
                 const response = await authAPI.login({ username, password });
+                console.log('Login response:', response);
                 
+                // Handle different response formats
+                let token = null;
                 if (response.token) {
-                    tokenManager.setToken(response.token);
+                    token = response.token;
+                } else if (response.data && response.data.token) {
+                    token = response.data.token;
+                } else if (response.access_token) {
+                    token = response.access_token;
+                } else if (response.jwt) {
+                    token = response.jwt;
+                }
+                
+                if (token) {
+                    tokenManager.setToken(token);
                     showMessage('Login successful! Redirecting...', 'success');
                     
                     // Redirect to user profile after successful login
@@ -46,10 +60,30 @@ document.addEventListener('DOMContentLoaded', function() {
                         window.location.href = 'User Profile Page/index.html';
                     }, 1500);
                 } else {
-                    showMessage('Login failed. Please check your credentials.', 'error');
+                    console.error('No token found in response:', response);
+                    showMessage('Login failed. Invalid response from server.', 'error');
                 }
             } catch (error) {
-                showMessage(error.message || 'Login failed. Please try again.', 'error');
+                console.error('Login error:', error);
+                
+                // Provide more specific error messages
+                let errorMessage = 'Login failed. Please try again.';
+                
+                if (error.name === 'AbortError') {
+                    errorMessage = 'Login request timed out. Please check your connection and try again.';
+                } else if (error.message.includes('non-JSON response')) {
+                    errorMessage = 'Server is not responding properly. Please check if your backend is running.';
+                } else if (error.message.includes('Failed to fetch')) {
+                    errorMessage = 'Cannot connect to server. Please check your internet connection and backend status.';
+                } else if (error.message.includes('401') || error.message.includes('Unauthorized')) {
+                    errorMessage = 'Invalid username or password. Please check your credentials.';
+                } else if (error.message.includes('403') || error.message.includes('Forbidden')) {
+                    errorMessage = 'Access denied. Please contact your administrator.';
+                } else if (error.message) {
+                    errorMessage = error.message;
+                }
+                
+                showMessage(errorMessage, 'error');
             } finally {
                 const submitBtn = loginForm.querySelector('button[type="submit"]');
                 submitBtn.disabled = false;

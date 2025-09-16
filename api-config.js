@@ -38,7 +38,14 @@ async function apiCall(endpoint, method = 'GET', data = null, token = null) {
     console.log('Making API call:', { url, method, data, headers: options.headers });
 
     try {
+        // Add timeout to prevent hanging
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+        
+        options.signal = controller.signal;
+        
         const response = await fetch(url, options);
+        clearTimeout(timeoutId);
         
         console.log('Response status:', response.status);
         console.log('Response headers:', response.headers);
@@ -54,7 +61,12 @@ async function apiCall(endpoint, method = 'GET', data = null, token = null) {
         }
         
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
+            let errorData;
+            try {
+                errorData = await response.json();
+            } catch {
+                errorData = { message: `HTTP error! status: ${response.status}` };
+            }
             throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
         }
 
